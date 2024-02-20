@@ -102,7 +102,7 @@
 
 	{#if showKeypadScreen}
 	<h2>Type the number from the {colorsNames[keyPadColor]} Road</h2>
-	<input id="PIN_Entry" bind:value />
+	<input id="PIN_Entry" bind:value /><br>
 	<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress}/>
 	{/if}
 
