@@ -10,7 +10,7 @@
 	let showKeypadScreen = false;
 	let showRainbowScreen = false;
 	let showEndScreen = false;
-	let showTutorialElements = false;
+	let showTutorialElements = true;
 	let value = '';
 	let permutation:Array<number> = []; 
 	let rounds = 0;
@@ -108,11 +108,12 @@
 
 	{#if showRainbowScreen}
 	{#if showTutorialElements}
-	<h2>Find your <strong><u>{gameHeader(rounds+1)} digit</u></strong> on the margins. Then find your digit's partner on any Road you'd like.</h2>
+	<h2><strong><u>{gameHeader(rounds+1)} digit</u></strong> of 4 on the margins. Remember one of your digit's partners on any Road you'd like.</h2>
 	{:else}
 	<h1><strong>{gameHeader(rounds+1)} digit</strong> of 4</h1>
 	{/if}
 	<RainbowRoad rounds={rounds+1} numColors={numColors} on:pickRoad={handlePickRoad}/>
+	<h2>Choose a Road</h2>
 	{/if}
 
 	{#if showEndScreen}
