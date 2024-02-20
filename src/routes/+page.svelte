@@ -1,20 +1,49 @@
 <script lang='ts'>
+	import StartPage from "./StartPage.svelte";
 	import KeyPad from "./KeyPad.svelte";
 	import RainbowRoad from "./RainbowRoad.svelte";
-	import {colors} from './utils'
-	let show_keypad_screen = false;
-	let show_rainbow_screen = true;
-
+	import EndPage from "./EndPage.svelte";
+	import {colors, colorsNames, gameHeader} from './utils'
+	
+	// Initial game state values
+	let showStartScreen = true;
+	let showKeypadScreen = false;
+	let showRainbowScreen = false;
+	let showEndScreen = false;
+	let showTutorialElements = false;
 	let value = '';
+	let permutation:Array<number> = []; 
 	let rounds = 0;
 	let userEnteredPIN = '';
 
+	// Phase Staging
+	function stageStartScreen(){
+		showStartScreen = true;
+		showKeypadScreen = false;
+		showRainbowScreen = false;
+		showEndScreen = false;
+	}
+	function stageKeyPadScreen(){
+		showStartScreen = false;
+		showKeypadScreen = true;
+		showRainbowScreen = false;
+		showEndScreen = false;
+	}
+	function stageRainbowScreen(){
+		showStartScreen = false;
+		showKeypadScreen = false;
+		showRainbowScreen = true;
+		showEndScreen = false;
+	}
+	function stageEndScreen(){
+		showStartScreen = false;
+		showKeypadScreen = false;
+		showRainbowScreen = false;
+		showEndScreen = true;
+	}
+
 	// from KeyPad
-	let keyPadColor:number = 4;
-
-	// from RainbowRoad
-	let numColors:number = 4;
-
+	let keyPadColor:number;
 	function handleNumKeyPress(event:CustomEvent){
 		let num = event.detail.value;
 		if(value.length > 0){
@@ -27,14 +56,38 @@
 		let key = event.detail.value;
 		if(key === 'backspace'){
 			value = value.substring(0,value.length-1);
-		} else if (key === 'enter'){
-			console.log("next round");
-			userEnteredPIN = userEnteredPIN.concat();
+		} else if (key === 'enter' && value.length > 0){
+			let mappedPINDigit = String(permutation.indexOf(Number(value)));
+			userEnteredPIN = userEnteredPIN.concat(mappedPINDigit);
+			permutation = [];
+			value = '';
+			rounds += 1;
+			if (rounds >= 4){
+				stageEndScreen();
+			} else {
+				stageRainbowScreen();
+			}
+		} else if (key === 'enter' && value.length === 0) {
+			console.log("Ptp tried submitting blank")
 		} else {
-			console.log("something other than 'backspace' or 'enter' was sent")
+			console.log("Something other than 'backspace' or 'enter' was sent")
 		}
 	}
 
+	// from RainbowRoad
+	let numColors:number = 4;
+	function handlePickRoad(event:CustomEvent){
+		let colorIndex = event.detail.color;
+		let perm = event.detail.value;
+
+		keyPadColor = colorIndex;
+		permutation = perm;
+
+		console.log("Color Index of Road chosen: " + colorIndex)
+		console.log("Permutation: " + perm)
+		stageKeyPadScreen();
+	}
+	
 </script>
 
 <svelte:head>
@@ -43,14 +96,27 @@
 </svelte:head>
 
 <section>
-	{#if show_keypad_screen}
-	<h1>Rainbow Road PIN Entry</h1>
-	<input id="PIN_Entry" bind:value /><br>
+	{#if showStartScreen}
+	<StartPage on:click={()=> stageRainbowScreen()} />
+	{/if}
+
+	{#if showKeypadScreen}
+	<h2>Type the number from the {colorsNames[keyPadColor]} Road</h2>
+	<input id="PIN_Entry" bind:value />
 	<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress}/>
 	{/if}
 
-	{#if show_rainbow_screen}
-	<RainbowRoad rounds={4} numColors={numColors}/>
+	{#if showRainbowScreen}
+	{#if showTutorialElements}
+	<h2>Find your <strong><u>{gameHeader(rounds+1)} digit</u></strong> on the margins. Then find your digit's partner on any Road you'd like.</h2>
+	{:else}
+	<h1><strong>{gameHeader(rounds+1)} digit</strong> of 4</h1>
+	{/if}
+	<RainbowRoad rounds={rounds+1} numColors={numColors} on:pickRoad={handlePickRoad}/>
+	{/if}
+
+	{#if showEndScreen}
+	<EndPage PIN={userEnteredPIN}/>
 	{/if}
 </section>
 
@@ -65,6 +131,11 @@
 
 	h1 {
 		width: 100%;
+	}
+
+	h2 {
+		width: 100%;
+		text-align: center;
 	}
 
 	#PIN_Entry {

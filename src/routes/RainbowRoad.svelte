@@ -3,7 +3,7 @@
     import {createEventDispatcher } from 'svelte'
     const dispatch = createEventDispatcher();
 
-    function pickRoad(c:String,v:Array<number>){
+    function pickRoad(c:number,v:Array<number>){
         dispatch('pickRoad',{
             color:c,
             value:v
@@ -11,7 +11,7 @@
     }
 
     export let rounds:number;
-    export let numColors:number;
+    export let numColors:number =1;
 
     let colorsUsed = colorsNames.slice(0,numColors);
     let pMatrix = getPermutationMatrix(numColors);
@@ -53,17 +53,19 @@
     </tbody>
 </table>
 <br>
+<!-- Allow user to select a permutation (or Road). 
+    the name of this permutation is the color
+    colors are represented as integers for parameterizability -->
 {#each colorsUsed as c,i}
 <button 
     class="roads" 
     style="grid-auto-rows:minmax({30/numColors}vh,auto);
     background-color:{colors[colorPresentationOrder[i]]}"
-    on:click = {() => pickRoad(c,pMatrix[i])}
+    on:click = {() => pickRoad(colorPresentationOrder[i],pMatrix[colorPresentationOrder[i]])}
     >   
     {colorsNames[colorPresentationOrder[i]]} Road
 </button>
 {/each}
-
 
 <style>
     table {
