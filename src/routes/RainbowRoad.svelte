@@ -25,13 +25,12 @@
         1st and Last columns are for user reference
         Middle Column Titles rendered to match the color order of the permutations in the body -->
         <tr>
-           <th>{gameHeader(rounds)} Digit</th>
+           <th>Your {gameHeader(rounds)} Digit</th>
            {#each colorsUsed as c,i}
            <th style="background-color:{colors[colorPresentationOrder[i]]}">
-                {colorsNames[colorPresentationOrder[i]]} Partners
+                {colorsNames[colorPresentationOrder[i]]} Codes
             </th>
            {/each}
-           <th>{gameHeader(rounds)} Digit</th>
         </tr>
     </thead>
     <tbody id="tableBody">
@@ -39,15 +38,15 @@
         then present 'numColors' number of permutations in a random order -->
         {#each [0,1,2,3,4,5,6,7,8,9] as digit}
         <tr>
-            <th>{digit} &#62</th>
+            <th>{digit} &#10148;</th>
             {#each pMatrix as perm,i}
             <th style="background-color:{colors[colorPresentationOrder[i]]}; 
-                    min-width:{100/(numColors+2)}vw;"
+                    "
             >
                 {pMatrix[colorPresentationOrder[i]][digit]}
             </th>
             {/each}
-            <th>&#60 {digit}</th>
+            <!-- <th>&#60 {digit}</th> -->
         </tr>
         {/each}
     </tbody>
@@ -60,16 +59,25 @@
 <button 
     class="roads" 
     style="grid-auto-rows:minmax({30/numColors}vh,auto);
-    background-color:{colors[colorPresentationOrder[i]]}"
+    background-color:{colors[colorPresentationOrder[i]]};
+    display:flex; align-items:center;justify-content:center;"
     on:click = {() => pickRoad(colorPresentationOrder[i],pMatrix[colorPresentationOrder[i]])}
     >   
-    {colorsNames[colorPresentationOrder[i]]} Partner
+    {colorsNames[colorPresentationOrder[i]]} Code
 </button>
 {/each}
 
 <style>
     table {
         width: 100%;
+        border-style: solid;
+        border-color: black;
+        border-collapse: collapse;
+        font-size: 1.3em;
+    }
+    th {
+        border-style: solid;
+        border-color: black;
     }
     .roads {
         display: grid;

@@ -108,12 +108,12 @@
 
 	{#if showRainbowScreen}
 	{#if showTutorialElements}
-	<h2><strong><u>{gameHeader(rounds+1)} digit</u></strong> of 4 on the margins. Remember one of your digit's partners.</h2>
+	<h2><strong><u>{gameHeader(rounds+1)} digit</u></strong> of 4 on the margins. Remember one of your digit's codes.</h2>
 	{:else}
 	<h1><strong>{gameHeader(rounds+1)} digit</strong> (of 4)</h1>
 	{/if}
 	<RainbowRoad rounds={rounds+1} numColors={numColors} on:pickRoad={handlePickRoad}/>
-	<h2>Pick a Partner!</h2>
+	<h2>Pick a Code!</h2>
 	{/if}
 
 	{#if showEndScreen}
@@ -132,6 +132,7 @@
 
 	h1 {
 		width: 100%;
+		font-size: 1.2em
 	}
 
 	h2 {
