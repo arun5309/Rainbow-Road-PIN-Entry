@@ -1,13 +1,13 @@
 // Colors that will be allowed in the rainbow permutation table
 export const colors: Array<string> = [
-	'#dd0000',
-	'#00dddd',
-	'#dd00dd',
+	'#00bb00',
+	'#ee9900',
+	'#dd60dd',
 	'#dddd00',
 	'#0000dd',
-	'#00dd00'
+	'#dd0000'
 ];
-export const colorsNames: Array<string> = ['Red', 'Aqua', 'Pink', 'Yellow', 'Blue', 'Green'];
+export const colorsNames: Array<string> = ['Green', 'Orange', 'Pink', 'Yellow', 'Blue', 'Red'];
 
 export function shuffle(array: Array<number>) {
 	let currentIndex = array.length,

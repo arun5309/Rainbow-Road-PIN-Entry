@@ -71,7 +71,7 @@
 	}
 
 	// from RainbowRoad
-	let numColors: number = 4;
+	let numColors: number = 3;
 	function handlePickRoad(event: CustomEvent) {
 		let colorIndex = event.detail.color;
 		let perm = event.detail.value;
