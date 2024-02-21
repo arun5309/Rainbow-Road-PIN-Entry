@@ -28,7 +28,7 @@
            <th>{gameHeader(rounds)} Digit</th>
            {#each colorsUsed as c,i}
            <th style="background-color:{colors[colorPresentationOrder[i]]}">
-                {colorsNames[colorPresentationOrder[i]]} Road
+                {colorsNames[colorPresentationOrder[i]]} Partners
             </th>
            {/each}
            <th>{gameHeader(rounds)} Digit</th>
@@ -63,7 +63,7 @@
     background-color:{colors[colorPresentationOrder[i]]}"
     on:click = {() => pickRoad(colorPresentationOrder[i],pMatrix[colorPresentationOrder[i]])}
     >   
-    {colorsNames[colorPresentationOrder[i]]} Road
+    {colorsNames[colorPresentationOrder[i]]} Partner
 </button>
 {/each}
 
