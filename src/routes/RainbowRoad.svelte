@@ -25,14 +25,14 @@
         Middle Column Titles rendered to match the color order of the permutations in the body -->
 		<tr>
 			<!-- <th><strong>{gameHeader(rounds)}</strong> Digit</th> -->
-			<th style="min-width:30vw"
-			><strong>Your</strong> Digit</th>
+			<th style="min-width:30vw"><strong>Your</strong> Digit</th>
 			<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
 			{#each colorsUsed as _, i}
-				<th style=
-				"background-color:{colors[colorPresentationOrder[i]]};
-				min-width:{50/(numColors)}vw">
-					{colorsNames[colorPresentationOrder[i]]} 
+				<th
+					style="background-color:{colors[colorPresentationOrder[i]]};
+				min-width:{50 / numColors}vw"
+				>
+					{colorsNames[colorPresentationOrder[i]]}
 				</th>
 			{/each}
 		</tr>
@@ -62,16 +62,18 @@
     the name of this permutation is the color
     colors are represented as integers for parameterizability -->
 <div>
-<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->	
-{#each colorsUsed as _, i}
-	<button
-		class="roads"
-		style="background-color:{colors[colorPresentationOrder[i]]}; align-items:center;justify-content:center;"
-		on:click={() => pickRoad(colorPresentationOrder[i], pMatrix[colorPresentationOrder[i]])}
-	>
-		{colorsNames[colorPresentationOrder[i]]} Code
-	</button>
-{/each}
+	<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
+	{#each colorsUsed as _, i}
+		<button
+			class="roads"
+			style="background-color:{colors[
+				colorPresentationOrder[i]
+			]}; align-items:center;justify-content:center;"
+			on:click={() => pickRoad(colorPresentationOrder[i], pMatrix[colorPresentationOrder[i]])}
+		>
+			{colorsNames[colorPresentationOrder[i]]} Code
+		</button>
+	{/each}
 </div>
 
 <style>
@@ -90,7 +92,7 @@
 		/* display: grid;
 		grid-template-columns: repeat(1, 1fr); */
 		min-width: 30vw;
-		min-height: 7vh; 
+		min-height: 7vh;
 		border-style: solid;
 		border-color: black;
 		font-size: 1em;

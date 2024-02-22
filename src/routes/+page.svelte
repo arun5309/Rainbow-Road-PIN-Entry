@@ -227,8 +227,8 @@
 	{/if}
 
 	{#if showKeypadScreen}
-		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+2}</h1>
-		<input id="PIN_Entry" bind:value maxlength="1"/><br />
+		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 2}</h1>
+		<input id="PIN_Entry" bind:value maxlength="1" /><br />
 		<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress} />
 		<h1>Type the <strong>{colorsNames[keyPadColor]} Code</strong> for your digit</h1>
 	{/if}
@@ -240,10 +240,13 @@
 				digit's codes. -->
 			</h2>
 		{:else}
-			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+1}</h1>
+			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 1}</h1>
 		{/if}
 		<RainbowRoad {numColors} on:pickRoad={handlePickRoad} />
-		<h1><strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the Code</h1>
+		<h1>
+			<strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the
+			Code
+		</h1>
 	{/if}
 
 	{#if showEndScreen}
