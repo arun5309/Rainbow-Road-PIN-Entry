@@ -16,6 +16,7 @@
 	let value = '';
 	let permutation: Array<number> = [];
 	let rounds = 0;
+	let round_per_digit = 0;
 	let userEnteredPIN = '';
 
 	// Phase Staging
@@ -226,22 +227,23 @@
 	{/if}
 
 	{#if showKeypadScreen}
-		<h2>Type your {gameHeader(rounds + 1)} digit's {colorsNames[keyPadColor]} partner</h2>
-		<input id="PIN_Entry" bind:value /><br />
+		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+2}</h1>
+		<input id="PIN_Entry" bind:value maxlength="1"/><br />
 		<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress} />
+		<h1>Type the <strong>{colorsNames[keyPadColor]} Code</strong> for your digit</h1>
 	{/if}
 
 	{#if showRainbowScreen}
 		{#if showTutorialElements}
 			<h2>
-				<strong><u>{gameHeader(rounds + 1)} digit</u></strong> of 4 on the margins. Remember one of your
-				digit's codes.
+				<!-- <strong><u>{gameHeader(rounds + 1)} digit: </u></strong> of 4 on the margins. Remember one of your
+				digit's codes. -->
 			</h2>
 		{:else}
-			<h1><strong>{gameHeader(rounds + 1)} digit</strong> (of 4)</h1>
+			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+1}</h1>
 		{/if}
-		<RainbowRoad rounds={rounds + 1} {numColors} on:pickRoad={handlePickRoad} />
-		<h2>Pick a Code!</h2>
+		<RainbowRoad {numColors} on:pickRoad={handlePickRoad} />
+		<h1><strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the Code</h1>
 	{/if}
 
 	{#if showEndScreen}
