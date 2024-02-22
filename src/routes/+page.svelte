@@ -5,6 +5,7 @@
 	// import EndPage from './EndPage.svelte';
 	import { colorsNames, gameHeader } from './utils';
 	import type { CreateInstanceResponse, UpdateInstanceResponse, GetPointsResponse } from './logic';
+	import banner from '$lib/images/Banners_Rainbow_Road.png';
 
 	// Initial game state values
 	let showStartScreen = true;
@@ -197,6 +198,8 @@
 
 <section>
 	{#if showStartScreen}
+		<img src={banner} alt="Rainbow Road" width="100%" height="30%" />
+		<br />
 		<input
 			type="text"
 			placeholder="User ID"
@@ -227,8 +230,8 @@
 	{/if}
 
 	{#if showKeypadScreen}
-		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+2}</h1>
-		<input id="PIN_Entry" bind:value maxlength="1"/><br />
+		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 2}</h1>
+		<input id="PIN_Entry" bind:value maxlength="1" /><br />
 		<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress} />
 		<h1>Type the <strong>{colorsNames[keyPadColor]} Code</strong> for your digit</h1>
 	{/if}
@@ -240,13 +243,18 @@
 				digit's codes. -->
 			</h2>
 		{:else}
-			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2)+1}</h1>
+			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 1}</h1>
 		{/if}
 		<RainbowRoad {numColors} on:pickRoad={handlePickRoad} />
-		<h1><strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the Code</h1>
+		<h1>
+			<strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the
+			Code
+		</h1>
 	{/if}
 
 	{#if showEndScreen}
+		<img src={banner} alt="Rainbow Road" width="100%" height="30%" />
+		<br />
 		{#if show_pin}
 			<div>Entered PIN: {userEnteredPIN}</div>
 		{/if}
