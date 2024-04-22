@@ -10,16 +10,17 @@
 	// }
 </script>
 
-<h1>Rainbow Road PIN Entry</h1>
-
+<!-- This title can be uncommmented as needed -->
+<!-- <h1>Rainbow Road PIN Entry</h1> -->
 <buton id="start" on:click>Start Game!</buton>
 
 <style>
 	#start {
-		background-color: aquamarine;
+		background-color: #22aa22;
 		min-width: 80vw;
-		min-height: 5vh;
+		min-height: 8vh;
 		text-align: center;
+		justify-content: center;
 		font-size: 1.5em;
 	}
 </style>

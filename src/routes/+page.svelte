@@ -1,8 +1,8 @@
 <script lang="ts">
-	// import StartPage from './StartPage.svelte';
+	import StartPage from './StartPage.svelte'; // This line is for the demo version of the experiment
 	import KeyPad from './KeyPad.svelte';
 	import RainbowRoad from './RainbowRoad.svelte';
-	// import EndPage from './EndPage.svelte';
+	import EndPage from './EndPage.svelte'; // This line is for the demo version of the experiment
 	import { colorsNames, gameHeader } from './utils';
 	import type { CreateInstanceResponse, UpdateInstanceResponse, GetPointsResponse } from './logic';
 	import banner from '$lib/images/Banners_Rainbow_Road.png';
@@ -168,27 +168,29 @@
 	}
 
 	function finish_transition() {
-		const url = 'https://142.93.219.243.nip.io/update_instance';
-		const data = {
-			iid_value: iid,
-			result_pin: userEnteredPIN
-		};
-		const request = new Request(url, {
-			method: 'POST',
-			body: JSON.stringify(data),
-			headers: new Headers({
-				'Content-Type': 'application/json; charset=UTF-8'
-			})
-		});
-		fetch(request).then((instance_response_value_temp) => {
-			instance_response_value_temp.json().then((temp) => {
-				const instance_response_value = <UpdateInstanceResponse>(<unknown>temp);
-				if (iid !== instance_response_value.iid) {
-					alert('Reached invalid state, please report bug!');
-				}
-				stageEndScreen();
-			});
-		});
+		stageEndScreen()
+		// --- Below is code to integrate end screen into the Data Collection version of this scheme
+		// const url = 'https://142.93.219.243.nip.io/update_instance';
+		// const data = {
+		// 	iid_value: iid,
+		// 	result_pin: userEnteredPIN
+		// };
+		// const request = new Request(url, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(data),
+		// 	headers: new Headers({
+		// 		'Content-Type': 'application/json; charset=UTF-8'
+		// 	})
+		// });
+		// fetch(request).then((instance_response_value_temp) => {
+		// 	instance_response_value_temp.json().then((temp) => {
+		// 		const instance_response_value = <UpdateInstanceResponse>(<unknown>temp);
+		// 		if (iid !== instance_response_value.iid) {
+		// 			alert('Reached invalid state, please report bug!');
+		// 		}
+		// 		stageEndScreen();
+		// 	});
+		// });
 	}
 </script>
 
@@ -200,7 +202,9 @@
 <section>
 	{#if showStartScreen}
 		<img src={banner} alt="Rainbow Road" width="100%" height="30%" />
-		<br />
+		<br>
+		<!-- Below is code to integrate start screen into the Data Collection version of this scheme -->
+		<!-- <br />
 		<input
 			type="text"
 			placeholder="User ID"
@@ -226,8 +230,10 @@
 			{/await}
 		{/if}
 		<br />
-		<button on:click={progress_transition}>Start Game</button>
-		<!-- <StartPage on:click={() => stageRainbowScreen()} /> -->
+		<button on:click={progress_transition}>Start Game</button> -->
+
+		<!-- Below is the code for the start page of the demo version of this password entry method -->
+		<StartPage on:click={() => stageRainbowScreen()} />
 	{/if}
 
 	{#if showKeypadScreen}
@@ -256,7 +262,8 @@
 	{#if showEndScreen}
 		<img src={banner} alt="Rainbow Road" width="100%" height="30%" />
 		<br />
-		{#if show_pin}
+		<!-- Below is code to integrate the end screen into the Data Collection version of this password entry method -->
+		<!-- {#if show_pin}
 			<div>Entered PIN: {userEnteredPIN}</div>
 		{/if}
 		<br />
@@ -283,8 +290,12 @@
 		<br />
 		<button on:click={reset}>Play Again</button>
 		<br />
-		<button><a href="https://142.93.219.243.nip.io/">Checkout Other Games</a></button>
-		<!-- <EndPage PIN={userEnteredPIN} /> -->
+		<button><a href="https://142.93.219.243.nip.io/">Checkout Other Games</a></button> -->
+
+		<!-- Below is the code for the end page of the demo version of this password entry method -->
+		<EndPage PIN={userEnteredPIN} />
+		<br>
+		<button on:click={reset}>Play Again</button>
 	{/if}
 </section>
 

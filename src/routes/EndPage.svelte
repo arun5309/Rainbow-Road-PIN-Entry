@@ -3,8 +3,8 @@
 	export let PIN = '';
 </script>
 
-<h1>Rainbow Road PIN Entry</h1>
-
+<!-- This title can be uncommmented as needed -->
+<!-- <h1>Rainbow Road PIN Entry</h1> -->
 {#if PIN_visible}
 	<p>{PIN}</p>
 {/if}
