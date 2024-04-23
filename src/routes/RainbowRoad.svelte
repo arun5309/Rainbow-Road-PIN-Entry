@@ -12,10 +12,14 @@
 
 	// export let rounds: number;
 	export let numColors: number = 1;
-
+	
 	let colorsUsed = colorsNames.slice(0, numColors);
 	let pMatrix = getPermutationMatrix(numColors);
 	let colorPresentationOrder = random1toNOrder(numColors);
+	// let cycle = 0
+	// function cyclePermutations(){
+	// 	return pMatrix[Math.floor(cycle/10)]
+	// }
 </script>
 
 <table id="rainbowRoad">
@@ -24,37 +28,41 @@
         1st and Last columns are for user reference
         Middle Column Titles rendered to match the color order of the permutations in the body -->
 		<tr>
-			<!-- <th><strong>{gameHeader(rounds)}</strong> Digit</th> -->
-			<th style="min-width:30vw"><strong>Your</strong> Digit</th>
+			<!-- <th style="min-width:30vw"><strong>Your</strong> Digit</th> -->
 			<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-			{#each colorsUsed as _, i}
-				<th
+			{#each [0,1,2,3,4,5,6,7,8,9] as digit}
+				<!-- <th
 					style="background-color:{colors[colorPresentationOrder[i]]};
 				min-width:{50 / numColors}vw"
 				>
 					{colorsNames[colorPresentationOrder[i]]}
-				</th>
+				</th> -->
+				<th>{digit}</th>
 			{/each}
 		</tr>
 	</thead>
 	<tbody id="tableBody">
 		<!-- For each digit (0-9) enumerate user options
         then present 'numColors' number of permutations in a random order -->
-		{#each [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] as digit}
-			<tr>
-				<th>{digit} &#10148;</th>
+		<tr>
+		{#each pMatrix as _,i}
+		<!-- <tr> -->
 				<!-- eslint-disable-next-line @typescript-eslint/no-unused-vars -->
-				{#each pMatrix as _, i}
-					<th
+				{#each [0,1,2,3,4,5,6,7,8,9] as digit}
+					<!-- <th
 						style="background-color:{colors[colorPresentationOrder[i]]}; 
                     "
 					>
 						{pMatrix[colorPresentationOrder[i]][digit]}
+					</th> -->
+					<th style="background-color:#aaaaaa">
+						<!-- {cyclePermutations()[digit]} -->
+						{pMatrix[colorPresentationOrder[i]][digit]}
 					</th>
 				{/each}
-				<!-- <th>&#60 {digit}</th> -->
-			</tr>
+		<!-- </tr> -->
 		{/each}
+		</tr>
 	</tbody>
 </table>
 <br />
