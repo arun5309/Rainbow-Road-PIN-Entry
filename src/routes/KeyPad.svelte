@@ -3,7 +3,7 @@
 	import { colors } from './utils';
 	const dispatch = createEventDispatcher();
 
-	export let keyPadColor: number;
+	let keyPadColor = "#ffffff";
 
 	function forwardNumKey(v: number) {
 		dispatch('numKey', {
@@ -22,55 +22,55 @@
 		class="key digit"
 		id="key1"
 		on:click={() => forwardNumKey(1)}
-		style="background-color:{colors[keyPadColor]}">1</button
+		style="background-color:{keyPadColor}">1</button
 	>
 	<button
 		class="key digit"
 		id="key2"
 		on:click={() => forwardNumKey(2)}
-		style="background-color:{colors[keyPadColor]}">2</button
+		style="background-color:{keyPadColor}">2</button
 	>
 	<button
 		class="key digit"
 		id="key3"
 		on:click={() => forwardNumKey(3)}
-		style="background-color:{colors[keyPadColor]}">3</button
+		style="background-color:{keyPadColor}">3</button
 	>
 	<button
 		class="key digit"
 		id="key4"
 		on:click={() => forwardNumKey(4)}
-		style="background-color:{colors[keyPadColor]}">4</button
+		style="background-color:{keyPadColor}">4</button
 	>
 	<button
 		class="key digit"
 		id="key5"
 		on:click={() => forwardNumKey(5)}
-		style="background-color:{colors[keyPadColor]}">5</button
+		style="background-color:{keyPadColor}">5</button
 	>
 	<button
 		class="key digit"
 		id="key6"
 		on:click={() => forwardNumKey(6)}
-		style="background-color:{colors[keyPadColor]}">6</button
+		style="background-color:{keyPadColor}">6</button
 	>
 	<button
 		class="key digit"
 		id="key7"
 		on:click={() => forwardNumKey(7)}
-		style="background-color:{colors[keyPadColor]}">7</button
+		style="background-color:{keyPadColor}">7</button
 	>
 	<button
 		class="key digit"
 		id="key8"
 		on:click={() => forwardNumKey(8)}
-		style="background-color:{colors[keyPadColor]}">8</button
+		style="background-color:{keyPadColor}">8</button
 	>
 	<button
 		class="key digit"
 		id="key9"
 		on:click={() => forwardNumKey(9)}
-		style="background-color:{colors[keyPadColor]}">9</button
+		style="background-color:{keyPadColor}">9</button
 	>
 	<button class="key action" id="key_backspace" on:click={() => forwardActionKey('backspace')}
 		>Backspace</button
@@ -79,7 +79,7 @@
 		class="key digit"
 		id="key0"
 		on:click={() => forwardNumKey(0)}
-		style="background-color:{colors[keyPadColor]}">0</button
+		style="background-color:{keyPadColor}">0</button
 	>
 	<button class="key action" id="key_enter" on:click={() => forwardActionKey('enter')}>Enter</button
 	>

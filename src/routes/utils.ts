@@ -1,3 +1,14 @@
+import a from '$lib/audio/a.mp3';
+import b from '$lib/audio/b.mp3';
+import c from '$lib/audio/c.mp3';
+import d from '$lib/audio/d.mp3';
+import e from '$lib/audio/e.mp3';
+import f from '$lib/audio/f.mp3';
+import g from '$lib/audio/g.mp3';
+import h from '$lib/audio/h.mp3';
+import j from '$lib/audio/j.mp3';
+import k from '$lib/audio/k.mp3';
+
 // Colors that will be allowed in the rainbow permutation table
 export const colors: Array<string> = [
 	'#00aa00',
@@ -14,6 +25,7 @@ export const colors: Array<string> = [
 // export const colorsNames: Array<string> = ['Green', 'Orange', 'Pink', 'Yellow', 'Blue', 'Red'];
 export const colorsNames: Array<string> = ['A', 'B', 'C', 'D', 'E', 'F','G','H','J','K'];
 
+export const voicePrompts = [a,b,c,d,e,f,g,h,j,k]
 
 export function shuffle(array: Array<number>) {
 	let currentIndex = array.length,

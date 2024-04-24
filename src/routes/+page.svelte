@@ -3,7 +3,7 @@
 	import KeyPad from './KeyPad.svelte';
 	import RainbowRoad from './RainbowRoad.svelte';
 	import EndPage from './EndPage.svelte'; // This line is for the demo version of the experiment
-	import { colorsNames, gameHeader } from './utils';
+	import { colorsNames, voicePrompts, gameHeader, getPermutationMatrix } from './utils';
 	import type { CreateInstanceResponse, UpdateInstanceResponse, GetPointsResponse } from './logic';
 	import banner from '$lib/images/Banners_Rainbow_Road.png';
 
@@ -15,7 +15,7 @@
 	let showTutorialElements = false;
 	let show_pin = false;
 	let value = '';
-	let permutation: Array<number> = [];
+	// let permutation: Array<number> = [];
 	let rounds = 0;
 	let round_per_digit = 0;
 	let userEnteredPIN = '';
@@ -27,12 +27,12 @@
 		showRainbowScreen = false;
 		showEndScreen = false;
 	}
-	function stageRainbowScreen() {
-		showStartScreen = false;
-		showKeypadScreen = false;
-		showRainbowScreen = true;
-		showEndScreen = false;
-	}
+	// function stageRainbowScreen() {
+	// 	showStartScreen = false;
+	// 	showKeypadScreen = false;
+	// 	showRainbowScreen = true;
+	// 	showEndScreen = false;
+	// }
 	function stageEndScreen() {
 		showStartScreen = false;
 		showKeypadScreen = false;
@@ -41,31 +41,44 @@
 	}
 
 	// from KeyPad
-	let keyPadColor: number;
+	// let keyPadColor: number;
 	function handleNumKeyPress(event: CustomEvent) {
 		let num = event.detail.value;
-		if (value.length > 0) {
+		if (value.length > 3) {
 			console.log('no more input allowed');
 		} else {
 			value = value.concat(num);
+			let mappedPINDigit = String(permutation.indexOf(Number(num)));
+			userEnteredPIN = userEnteredPIN.concat(mappedPINDigit);
+			// permutation = [];
+			voicePromptedColor = Math.floor(Math.random() * numColors)
+			if(value.length < 4){
+				const vocal_prompt = new Audio(voicePrompts[voicePromptedColor]);
+				vocal_prompt.play();
+			}
+			rounds += 1;
 		}
 	}
 	function handleActionKeyPress(event: CustomEvent) {
 		let key = event.detail.value;
 		if (key === 'backspace') {
 			value = value.substring(0, value.length - 1);
-		} else if (key === 'enter' && value.length > 0) {
-			let mappedPINDigit = String(permutation.indexOf(Number(value)));
-			userEnteredPIN = userEnteredPIN.concat(mappedPINDigit);
-			permutation = [];
+			userEnteredPIN = userEnteredPIN.substring(0,userEnteredPIN.length - 1);
+			voicePromptedColor = Math.floor(Math.random() * numColors)
+			rounds -= 1;
+			const vocal_prompt = new Audio(voicePrompts[voicePromptedColor]);
+				vocal_prompt.play();
+		} else if (key === 'enter' && value.length > 3) {
+			// let mappedPINDigit = String(permutation.indexOf(Number(value)));
+			// userEnteredPIN = userEnteredPIN.concat(mappedPINDigit);
+			// permutation = [];
 			value = '';
-			rounds += 1;
-			if (rounds >= 4) {
+			// if (rounds >= 4) {
 				finish_transition();
-			} else {
-				stageRainbowScreen();
-			}
-		} else if (key === 'enter' && value.length === 0) {
+			// } else {
+				// stageRainbowScreen();
+			// }
+		} else if (key === 'enter' && value.length < 4) {
 			console.log('Ptp tried submitting blank');
 		} else {
 			console.log("Something other than 'backspace' or 'enter' was sent");
@@ -73,18 +86,22 @@
 	}
 
 	// from RainbowRoad
-	let numColors: number = 1;
-	function handlePickRoad(event: CustomEvent) {
-		let colorIndex = event.detail.color;
-		let perm = event.detail.value;
+	let numColors: number = 3;
+	let voicePromptedColor:number = Math.floor(Math.random() * numColors)
+	let pMatrix: Array<Array<number>> = getPermutationMatrix(numColors);
+	$: permutation = pMatrix[voicePromptedColor];
+	// function handlePickRoad(event: CustomEvent) {
+	// 	// let colorIndex = event.detail.color;
+	// 	voicePromptedColor = event.detail.color;
+	// 	pMatrix = event.detail.value;
 
-		keyPadColor = colorIndex;
-		permutation = perm;
+	// 	// keyPadColor = colorIndex;
+	// 	permutation = pMatrix[voicePromptedColor];
 
-		console.log('Color Index of Road chosen: ' + colorIndex);
-		console.log('Permutation: ' + perm);
-		stageKeyPadScreen();
-	}
+	// 	console.log('Color Index of Road chosen: ' + voicePromptedColor);
+	// 	console.log('Permutation: ' + permutation);
+	// 	// stageKeyPadScreen();
+	// }
 
 	let uid: string = '';
 	let uid_valid: boolean = false;
@@ -100,7 +117,9 @@
 		showEndScreen = false;
 		showTutorialElements = false;
 		value = '';
-		permutation = [];
+		// permutation = [];
+		voicePromptedColor = Math.floor(Math.random() * numColors);
+		pMatrix = getPermutationMatrix(numColors);
 		rounds = 0;
 		userEnteredPIN = '';
 
@@ -145,26 +164,34 @@
 	}
 
 	function progress_transition() {
-		if (!uid_valid) return;
-		const url = 'https://142.93.219.243.nip.io/create_instance';
-		const data = {
-			game_id: 'IMMM',
-			user_id: uid.toLowerCase()
-		};
-		const request = new Request(url, {
-			method: 'POST',
-			body: JSON.stringify(data),
-			headers: new Headers({
-				'Content-Type': 'application/json; charset=UTF-8'
-			})
-		});
-		fetch(request).then((create_instance_value_temp) => {
-			create_instance_value_temp.json().then((temp) => {
-				const create_instance_value = <CreateInstanceResponse>(<unknown>temp);
-				iid = create_instance_value.iid;
-				stageRainbowScreen();
-			});
-		});
+		stageKeyPadScreen();
+		console.log("voicePrompt: "+voicePromptedColor);
+		console.log("\n");
+		console.log(pMatrix);
+		rounds += 1;
+		const vocal_prompt = new Audio(voicePrompts[voicePromptedColor]);
+				vocal_prompt.play();
+		// below is the old code for converting the experiment to a data collection setup.
+		// if (!uid_valid) return;
+		// const url = 'https://142.93.219.243.nip.io/create_instance';
+		// const data = {
+		// 	game_id: 'IMMM',
+		// 	user_id: uid.toLowerCase()
+		// };
+		// const request = new Request(url, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(data),
+		// 	headers: new Headers({
+		// 		'Content-Type': 'application/json; charset=UTF-8'
+		// 	})
+		// });
+		// fetch(request).then((create_instance_value_temp) => {
+		// 	create_instance_value_temp.json().then((temp) => {
+		// 		const create_instance_value = <CreateInstanceResponse>(<unknown>temp);
+		// 		iid = create_instance_value.iid;
+		// 		stageRainbowScreen();
+		// 	});
+		// });
 	}
 
 	function finish_transition() {
@@ -233,31 +260,43 @@
 		<button on:click={progress_transition}>Start Game</button> -->
 
 		<!-- Below is the code for the start page of the demo version of this password entry method -->
-		<StartPage on:click={() => stageRainbowScreen()} />
+		<StartPage on:click={() => {progress_transition()}} />
 	{/if}
 
 	{#if showKeypadScreen}
-		<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 2}</h1>
-		<input id="PIN_Entry" bind:value maxlength="1" /><br />
-		<KeyPad {keyPadColor} on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress} />
-		<h1>Type the <strong>{colorsNames[keyPadColor]} Code</strong> for your digit</h1>
+		<!-- <h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 2}</h1> -->
+		{#if rounds < 5}
+		<h1><strong>Enter your {gameHeader(rounds)} PIN digit </strong></h1>
+		{:else}
+		<h1><strong>Press Enter when ready</strong></h1>
+		{/if}
+		<input id="PIN_Entry" bind:value maxlength=0 placeholder="Use key pad to enter your PIN" /><br />
+		<RainbowRoad {numColors} {voicePromptedColor} {pMatrix} />
+		<KeyPad on:numKey={handleNumKeyPress} on:actionKey={handleActionKeyPress} />
+		<br>
+		{#if rounds < 5}
+		<button on:click = {()=>{new Audio(voicePrompts[voicePromptedColor]).play()}}
+			style="min-height:5vh">Repeat {gameHeader(rounds)} Voice Prompt
+		</button>
+		{/if}
+		<!-- <h1>Type the <strong>{colorsNames[keyPadColor]} Code</strong> for your digit</h1> -->
 	{/if}
 
-	{#if showRainbowScreen}
-		{#if showTutorialElements}
-			<h2>
+	<!-- {#if showRainbowScreen} -->
+		<!-- {#if showTutorialElements} -->
+			<!-- <h2> -->
 				<!-- <strong><u>{gameHeader(rounds + 1)} digit: </u></strong> of 4 on the margins. Remember one of your
 				digit's codes. -->
-			</h2>
-		{:else}
-			<h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 1}</h1>
-		{/if}
-		<RainbowRoad {numColors} on:pickRoad={handlePickRoad} />
-		<h1>
+			<!-- </h2> -->
+		<!-- {:else} -->
+			<!-- <h1><strong>{gameHeader(rounds + 1)} digit </strong>| Round {(round_per_digit % 2) + 1}</h1> -->
+		<!-- {/if} -->
+		<!-- <RainbowRoad {numColors} on:pickRoad={handlePickRoad} /> -->
+		<!-- <h1>
 			<strong>Look</strong> at your digit. <strong>Pick</strong> a Color. <strong>Remember</strong> the
 			Code
-		</h1>
-	{/if}
+		</h1> -->
+	<!-- {/if} -->
 
 	{#if showEndScreen}
 		<img src={banner} alt="Rainbow Road" width="100%" height="30%" />
