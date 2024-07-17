@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages # Adding comment just to rerun workflow
+name: Deploy to GitHub Pages # Adding comment just to rerun workflow after making it default branch
 
 on:
   push:
